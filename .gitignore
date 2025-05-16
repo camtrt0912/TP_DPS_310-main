@@ -1,0 +1,6 @@
+/bin
+/build
+/.vscode
+/lib/libdps310.so
+/lib/libdps310.a
+/lib/libdps310.o
