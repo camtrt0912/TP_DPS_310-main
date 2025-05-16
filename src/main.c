@@ -79,6 +79,7 @@ int main(int argc, char **argv) {
             float pressure = dps310_read_pressure();
 
             printf("Temperature: %.1f °C\n", temperature);
+            LOG_INFO("Temperature: %.1f °C\n", temperature);
             printf("Pressure: %.2f mbar\n", pressure);
 
             // Publier les données sur les topics dédiés
@@ -170,6 +171,8 @@ int main(int argc, char **argv) {
     // Arrêt propre
     simulate_dps310_power(false);
     dps310_shutdown();
+
+    LOG_ERROR("Failed to connect to MQTT broker\n");
 
     return 0;
 }

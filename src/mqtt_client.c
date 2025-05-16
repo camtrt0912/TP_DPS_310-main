@@ -6,6 +6,9 @@
 #include <signal.h>
 #include <stdbool.h>
 
+#define LOG_INFO(...) printf("[INFO] " __VA_ARGS__)
+#define LOG_ERROR(...) fprintf(stderr, "[ERROR] " __VA_ARGS__)
+
 static bool running = true;
 
 // Fonction pour simuler l'allumage/extinction du capteur
@@ -152,5 +155,26 @@ void subscribe_to_commands(const char *topic, void (*command_handler)(const char
 
     MQTTClient_disconnect(client, 10000);
     MQTTClient_destroy(&client);
+}
+
+// Fonction pour sauvegarder les données dans un fichier
+void save_data_to_file(const char *filename, float temperature, float pressure) {
+    FILE *file = fopen(filename, "a");
+    if (file == NULL) {
+        perror("Failed to open file");
+        return;
+    }
+    fprintf(file, "Temperature: %.1f °C, Pressure: %.2f mbar\n", temperature, pressure);
+    fclose(file);
+}
+
+void print_help() {
+    printf("Usage: ./program [OPTIONS]\n");
+    printf("Options:\n");
+    printf("  -h, --help           Show this help message\n");
+    printf("  -t, --topic-name     Specify the MQTT topic name\n");
+    printf("  -i, --interval       Set the interval for sensor readings (in seconds)\n");
+    printf("\nExample:\n");
+    printf("  ./program -t my_topic -i 10\n");
 }
 
